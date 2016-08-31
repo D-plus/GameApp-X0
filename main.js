@@ -15,7 +15,7 @@
   let checkLastMessage = null;
   let win = false;
   let table = null;
-
+  const gameField = document.querySelector('.gameField');
 
   function addElement(data) {
     let li = document.createElement('li');
@@ -28,7 +28,7 @@
     if (createdGameId === data.id) {
       buttonCreateGame.disabled = false;
     }
-    let removeableElement = document.querySelector(`[data-id=${data.id}]`);
+    const removeableElement = document.querySelector(`[data-id=${data.id}]`);
     removeableElement.parentElement.removeChild(removeableElement);
   }
 
@@ -36,7 +36,7 @@
     let message = new Message({
       message: 'Неизвестная ошибка. Начните новую игру',
       color: '#f4fc08',
-      duration: 7000
+      duration: 7000,
     });
     document.body.appendChild(message.elem);
     message.render();
@@ -57,15 +57,15 @@
       response.error = 401;
       return response;
     } else {
-      console.log('here');
+      window.console.log('here');
        response.unknow = 'Неизвестная ошибка';
-       return response;
+      return response;
     }
   }
   class Message {
     constructor(options) {
       this.duration = options.duration;
-      let component = document.createElement('div');
+      const component = document.createElement('div');
       component.classList.add('error-message');
       component.style.fontSize = `${(options.fontSize || 25)}px`;
 
@@ -79,9 +79,9 @@
       this.elem = component;
     }
     render() {
-      let invl = setInterval(() => {
+      const invl = setInterval(() => {
         this.elem.style.visibility = 'visible';
-        this.elem.style.top = `${parseInt(getComputedStyle(this.elem).top) + 5}px`;
+        this.elem.style.top = `${parseInt(getComputedStyle(this.elem).top, 10) + 5}px`;
       });
       setTimeout(() => {
         clearInterval(invl);
@@ -92,8 +92,7 @@
   }
 
   function onClickNewGame() {
-    console.log('NewGame');
-    let gameField = document.querySelector('.gameField');
+    window.console.log('NewGame');
     removeGameField();
     liveGames.hidden = false;
     newGameButton.disabled = true;
@@ -104,19 +103,22 @@
   function setNewGameButton() {
     newGameButton.innerHTML = 'Новая игра';
     newGameButton.disabled = false;
-    newGameButton.addEventListener('click', onClickNewGame)
+    newGameButton.addEventListener('click', onClickNewGame);
   }
 
   function clickOnCell(e) {
-    let td = e.target;
+    const td = e.target;
     if (td.tagName !== 'TD') return;
 
     fetch('http://xo.t.javascript.ninja/move', {
       method: 'POST',
       body: JSON.stringify({ move: td.dataset.num }),
-      headers: { 'Content-Type': 'application/json; charset=utf-8', 'game-id': createdGameId, 'player-id': playerID }
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'game-id': createdGameId,
+        'player-id': playerID },
     })
-      .then(checkMove, err => console.log(err))
+      .then(checkMove, err => window.console.log(err))
       .then(response => {
         if (!response.error) {
           return response.json();
@@ -126,7 +128,7 @@
         }
       })
       .then(result => {
-        console.log(result);
+        window.console.log(result);
         if (result.win) win = true;
         if (result.unknow) {
           renderUnkownError();
@@ -136,7 +138,7 @@
             message = new Message({
               message: result.message,
               color: '#d14d6e',
-              duration: 2500
+              duration: 2500,
             });
             checkLastMessage = result.message;
             existErrorMessage = true;
@@ -159,7 +161,7 @@
         }
         if (result.success) {
           setMark(td);
-          console.log('startLongPolling(2+)');
+          window.console.log('startLongPolling(2+)');
           if (!win) longPolling();
         }
         if (result.win) {
@@ -169,7 +171,7 @@
               message: 'Вы победили!',
               color: '#3fff05',
               duration: 5000,
-              fontSize: 50
+              fontSize: 50,
             });
             document.body.appendChild(message.elem);
             message.render();
@@ -181,23 +183,24 @@
             message.render();
           }
         }
-      }).catch(err => true)
-    }
+      })
+      .catch(() => true);
+  }
   class GameField {
     constructor(data) {
       let number = 1;
       this.elem = document.createElement('div');
       this.elem.classList.add('gameField');
-      let span = document.createElement('span');
+      const span = document.createElement('span');
       span.classList.add('title');
       span.innerHTML = 'Your side :';
       this.elem.appendChild(span);
       table = document.createElement('table');
       table.className = 'gameField__field';
-      Array.from({ length:10 }).forEach(() => {
-        let tr = document.createElement('tr');
+      Array.from({ length: 10 }).forEach(() => {
+        const tr = document.createElement('tr');
         Array.from({ length: 10 }).forEach(() => {
-          let td = document.createElement('td');
+          const td = document.createElement('td');
           td.setAttribute('data-num', number++);
           tr.appendChild(td);
         });
@@ -210,15 +213,14 @@
   }
 
   function renderField(data) {
-    //document.body.style.backgroundColor = '#6f6db0';
-    let gameField = new GameField(data);
-    document.body.appendChild(gameField.elem);
+    const newGameField = new GameField(data);
+    document.body.appendChild(newGameField.elem);
   }
 
   function markOpponentStep(cellNumber) {
-    let selector = `[data-num='${cellNumber}']`;
-    let cell = table.querySelector(selector);
-    let contentForCell = side === 'x'? 'o' : 'x';
+    const selector = `[data-num='${cellNumber}']`;
+    const cell = table.querySelector(selector);
+    const contentForCell = side === 'x' ? 'o' : 'x';
     cell.setAttribute('data-cellCheked', contentForCell);
 
     cell.style.backgroundColor = '#00ff37';
@@ -246,7 +248,7 @@
     }
   }
   function replaceLoseToNewGame() {
-    newGameButton.removeEventListener('click', onClickLose);////////////////
+    newGameButton.removeEventListener('click', onClickLose);
     newGameButton.innerHTML = 'Новая игра';
     newGameButton.addEventListener('click', onClickNewGame);
   }
@@ -254,7 +256,7 @@
   function longPolling() {
     fetch('http://xo.t.javascript.ninja/move', {
       method: 'GET',
-      headers: { 'game-id': createdGameId, 'player-id': playerID }
+      headers: { 'game-id': createdGameId, 'player-id': playerID },
     })
       .then(checkLongPollingStatus)
       .then(response => response.json())
@@ -263,20 +265,20 @@
           markOpponentStep(res.move);
         }
         if (res.win) {
-          console.log('11111' + res.win);
+          window.console.log(res.win);
           replaceLoseToNewGame();
           if (!existErrorMessage) {
             message = new Message({
               message: `${res.win}!`,
               color: '#05fff3',
               duration: 5000,
-              fontSize: 50
+              fontSize: 50,
             });
             document.body.appendChild(message.elem);
             message.render();
             return;
           } else {
-            title.innerHTML = `${res.win}!`
+            title.innerHTML = `${res.win}!`;
             title.style.color = '#05fff3';
             title.style.fontSize = `${50}px`;
             message.render();
@@ -284,37 +286,40 @@
         }
       })
       .catch(error => {
-        console.log(error.response.status);
+        window.console.log(error.response.status);
         if (error.response.status === 504) {
-          console.log('504');
+          window.console.log('504');
           longPolling();
         }
-      })
+      });
   }
 
   function checkResponse(response) {
     if (response.status === 200) return response;
     else {
-      let error = new Error(response.statusText);
+      const error = new Error(response.statusText);
       error.response = response;
       throw error;
     }
   }
 
   function removeGameField() {
-    let gameField = document.querySelector('.gameField');
+    const gameField = document.querySelector('.gameField');
     gameField.parentNode.removeChild(gameField);
   }
 
-  function onClickLose(e) {
+  function onClickLose() {
     fetch('http://xo.t.javascript.ninja/surrender', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json; charset=utf-8', 'game-id': createdGameId, 'player-id': playerID }
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'game-id': createdGameId,
+        'player-id': playerID },
     })
       .then(checkResponse)
       .then(response => response.json())
       .then(() => showGameList())
-      .catch(error => console.log(error + '!!!!!!!!'))
+      .catch(error => window.console.log(error + '!!!!!!!!'))
   }
 
   function showGameList() {
@@ -326,7 +331,6 @@
     newGameButton.removeEventListener('click', onClickLose);
 
     newGameButton.addEventListener('click', onClickNewGame);
-
   }
 
   function enableButtonNewGame() {
@@ -340,21 +344,21 @@
     buttonCreateGame.disabled = true;
     dialog.showModal();
     playerID = data.id;
-    console.log(playerID);
+    window.console.log(playerID);
 
-    let postData = JSON.stringify({ player: data.id, game: createdGameId });
-    console.log('startGame');
+    const postData = JSON.stringify({ player: data.id, game: createdGameId });
+    window.console.log('startGame');
     liveGames.hidden = true;
     enableButtonNewGame();
     fetch('http://xo.t.javascript.ninja/gameReady', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json; charset=utf-8' },
-      body: postData
+      body: postData,
     })
       .then(checkStatus)
       .then(response => response.json())
       .then(res => {
-        console.log(res);
+        window.console.log(res);
         side = res.side;
         renderField(res);
         dialog.close();
@@ -363,16 +367,30 @@
       })
       .catch(error => {
         if (error.response.status === 410) {
-          document.body.appendChild(document.createTextNode('Ошибка старта игры: другой игрок не ответил. 410 (Gone)'))
+         let message = new Message({
+            message: 'Ошибка старта игры: другой игрок не ответил. 410 (Gone)!',
+            color: 'red',
+            duration: 5000,
+          });
+          document.body.appendChild(message.elem);
+          message.render();
+        //  document.body.appendChild(document.createTextNode('Ошибка старта игры: другой игрок не ответил. 410 (Gone)'));
         } else {
-          document.body.appendChild(document.createTextNode('Неизвестная ошибка старта игры'))
+          let message = new Message({
+             message: 'Неизвестная ошибка старта игры',
+             color: 'red',
+             duration: 5000,
+           });
+           document.body.appendChild(message.elem);
+           message.render();
+        //  document.body.appendChild(document.createTextNode('Неизвестная ошибка старта игры'))
         }
       });
   }
 
   function onMessage(event) {
-    let data = JSON.parse(event.data);
-    let action = data.action;
+    const data = JSON.parse(event.data);
+    const action = data.action;
     if (action === false && data.error) {
       return;
     }
@@ -383,16 +401,16 @@
   ws.addEventListener('message', onMessage);
 
 
-  function createGame(e) {
+  function createGame() {
     buttonCreateGame.disabled = true;
     fetch('http://xo.t.javascript.ninja/newGame', { method: 'POST' })
       .then(response => response.json())
       .then(res => {
-        ws.send(JSON.stringify({ register: res.yourId }))
+        ws.send(JSON.stringify({ register: res.yourId }));
         createdGameId = res.yourId;
       })
-      .catch(function(e) {
-        let dialogElem = document.querySelector('#errorCreateGame');
+      .catch(() => {
+        const dialogElem = document.querySelector('#errorCreateGame');
         dialogElem.showModal();
         setTimeout(() => {
           dialogElem.close();
@@ -402,17 +420,15 @@
   buttonCreateGame.addEventListener('click', createGame);
 
   function onClickOntoGameList(e) {
-    let target = e.target.tagName === 'LI';
-    let checkListItem = ulList.contains(e.target);
+    const target = e.target.tagName === 'LI';
+    const checkListItem = ulList.contains(e.target);
     let li = null;
     if (target && checkListItem) {
       li = e.target;
-      let gameId = JSON.stringify({ register: li.dataset.id });
+      const gameId = JSON.stringify({ register: li.dataset.id });
       createdGameId = li.dataset.id;
       ws.send(gameId);
     }
   }
   ulList.addEventListener('click', onClickOntoGameList);
-  const header = document.querySelector('.liveGames__availableGames');
-  header.addEventListener('mousedown', function() { return false});
 }());
