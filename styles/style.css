@@ -9,7 +9,7 @@ body {
   margin: 0;
   height: 2000px;
   overflow: hidden;
-  background: url(images/4.png) 0 0 no-repeat;
+  background: url(../images/4.png) 0 0 no-repeat;
   font-family: 'Comic Sans MS', sans-serif;
 }
 
@@ -218,7 +218,7 @@ body dialog::backdrop {
   top: -31%;
   width: 70px;
   height: 74px;
-  background: url(images/x1.png) 0 0 no-repeat;
+  background: url(../images/x1.png) 0 0 no-repeat;
 }
 .btn:disabled:hover {
   background-color: rgba(255, 255, 255, 0.9);
@@ -236,5 +236,5 @@ body dialog::backdrop {
   left: 45%;
   width: 25px;
   height: 25px;
-  background: url(images/s.png) 0 0 no-repeat;
+  background: url(../images/s.png) 0 0 no-repeat;
 }
