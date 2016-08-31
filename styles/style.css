@@ -1,0 +1,240 @@
+*, *:after, *:before {-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+html {
+  background-color: #6f6db0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+body {
+  margin: 0;
+  height: 2000px;
+  overflow: hidden;
+  background: url(images/4.png) 0 0 no-repeat;
+  font-family: 'Comic Sans MS', sans-serif;
+}
+
+body dialog {
+  border-radius: 50%;
+  font-size: 25px;
+  background: #ffff16;
+  border: none;
+  color: lightcoral;
+}
+
+.liveGames {
+  position: absolute;
+  left: 40%;
+  margin-top: 25px;
+}
+
+body dialog::backdrop {
+  background: rgba(255,255,255,0.5);
+}
+.liveGames__gameList:last-child {
+  border-bottom: 1px solid black;
+}
+
+.liveGames__gameList li {
+  /*width: 150px;*/
+  text-align: center;
+  color: lightgreen;
+  position: relative;
+  left: -20px;
+  text-align: center;
+  list-style: none;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  font-size: 16px;
+}
+
+.liveGames__gameList li::before {
+  content: 'x';
+  color: black
+}
+.liveGames__gameList li::after {
+  content: 'o';
+  color: black
+}
+
+.liveGames__gameList li:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.gameField {
+  text-align: center;
+}
+
+.title {
+  font-size: 16px;
+  position: relative;
+  left: 165px;
+  top: -16px;
+}
+.gameField__field {
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+.gameField__field td {
+  transition: 1s ease-in-out;
+  border: 1.9px solid rgb(53, 69, 109);
+  width: 50px;
+  height: 50px;
+
+}
+
+[data-side='x']::before {
+  content: 'X';
+  position: relative;;
+  color: #fff;
+  font-size: 50px;
+  left: 287px;
+  top: -2px;
+}
+
+[data-side='o']::before {
+  content: 'O';
+  position: relative;;
+  color: #fff;
+  font-size: 50px;
+  left: 287px;
+  top: -3px;
+}
+
+.error-message {
+  visibility: hidden;
+  transition: all 0.1s;
+  position: absolute;
+  top: -10px;
+  left: 444px;
+}
+[data-cellCheked='x']::before {
+  content: 'X';
+  color: lightgreen;
+  font-size: 36px;
+}
+[data-cellCheked='o']::before {
+  content: 'O';
+  color: lightgreen;
+  font-size: 36px;
+}
+[data-lastMark] {
+  transition: 1s ease-in-out;
+  background-color: rgba(225, 225, 225, 1);
+}
+
+.btn {
+	border: none;
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	background: none;
+	cursor: pointer;
+	    padding: 10px 25px;
+	display: inline-block;
+	margin: 15px 30px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: 700;
+	outline: none;
+	position: relative;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+.btn:before {
+  font-family: 'icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn:after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.btn-1 {
+	border: 1.9px solid #000;
+	color: #fff;
+}
+
+/*.btn-1e {
+	overflow: hidden;
+}*/
+
+/*.btn-1e:after {
+	width: 100%;
+	height: 0;
+	top: 50%;
+	left: 50%;
+	background: #fff;
+	opacity: 0;
+	-webkit-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+	-moz-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+	-ms-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+	transform: translateX(-50%) translateY(-50%) rotate(45deg);
+}*/
+
+.btn-1e:hover,
+.btn-1e:active {
+	color: #6f6db0;
+  background-color: rgba(142, 239, 146, 0.7);
+}
+
+/*.btn-1e:hover:after {
+	height: 260%;
+	opacity: 1;
+}*/
+
+.btn-1e:active:after {
+	height: 400%;
+	opacity: 1;
+}
+.btn:disabled {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.interface {
+  margin-top: 19px;
+  position: relative;
+  left: 33.5%;
+}
+
+.btn:disabled::before {
+  content: '';
+  position: absolute;
+  left: 30%;
+  top: -31%;
+  width: 70px;
+  height: 74px;
+  background: url(images/x1.png) 0 0 no-repeat;
+}
+.btn:disabled:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #fff;
+  cursor: not-allowed;
+}
+.liveGames__availableGames {
+  margin-bottom: 31px;
+}
+
+.liveGames__availableGames::after {
+  content: '';
+  position: absolute;
+  top: 52px;
+  left: 45%;
+  width: 25px;
+  height: 25px;
+  background: url(images/s.png) 0 0 no-repeat;
+}
