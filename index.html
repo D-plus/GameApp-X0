@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./style.css">
+    <title>X/0</title>
+  </head>
+  <body>
+    <div class="interface">
+      <button class='btn btn-1 btn-1e' id=buttonCreateGame type="button" name="button">Создать игру</button>
+      <button class='btn btn-1 btn-1e' disabled id=newGame class=newGame type="button" name="button">Новая игра</button>
+    </div>
+    <dialog id='waitGameStart'>Ожидаем начала игры</dialog>
+    <dialog id='errorCreateGame'>Ошибка создания игры</dialog>
+    <article class="liveGames">
+      <h1 class="liveGames__availableGames">Список доступных игр</h1>
+      <ul class=liveGames__gameList></ul>
+    </article>
+    <script src=main.js></script>
+  </body>
+</html>
